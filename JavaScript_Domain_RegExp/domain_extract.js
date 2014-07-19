@@ -1,4 +1,4 @@
-function domainExtract () {
+function domainExtract() {
   this.domain = "";
   this.subDomain = "";
   this.urlstr = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))";
@@ -42,7 +42,7 @@ domainExtract.prototype.bindEvents = function() {
   });
 };
 
-function createExtractor () {
+function createExtractor() {
   var extractor = new domainExtract();
   extractor.bindEvents();
 }
