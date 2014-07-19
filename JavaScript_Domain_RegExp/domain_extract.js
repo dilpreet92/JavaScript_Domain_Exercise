@@ -1,40 +1,42 @@
 function domainExtract () {
-  this.submitElement = submitElem;
-  this.Domain = "";
-  this.subdomain = "";
+  this.domain = "";
+  this.subDomain = "";
+  this.urlstr = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))";
+  this.domainstr = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
 }
 
 domainExtract.prototype.validate = function() {
-  if (urlpatt.test(urlElem.value)) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  var urlpatt = new RegExp(this.urlstr);
+  return (urlpatt.test(urlElem.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-  var matched = urlElem.value.match(domainstr);
-  this.Domain = matched[0].substring(2,matched[0].length);
-  var splittedArray = this.Domain.split(".");
-  if (splittedArray.length <= 2) {
-    alert("Domain :" + this.Domain);
+  var matched = urlElem.value.match(this.domainstr);
+  this.domain = matched[0].substring(2,matched[0].length);
+};
+
+domainExtract.prototype.getsubDomain = function() {
+  var splittedDomain = this.domain.split(".");
+  if (splittedDomain.length > 2) {
+    this.subDomain = splittedDomain[0];
+    this.domain = this.domain.substring(this.domain.indexOf(".")+1,this.domain.length);
   }
-  else {
-    this.subdomain = splittedArray[0];
-    this.Domain = this.Domain.substring(this.Domain.indexOf(".")+1,this.Domain.length);
-    alert("Domain :" + " "+ this.Domain + "\n" + "Subdomain :" + " "+ this.subdomain);
-  }
+};
+
+domainExtract.prototype.display = function() {
+  alert("Domain :" + " "+ this.domain + "\n" + "SubDomain :" + " "+ this.subDomain);
 };
 
 domainExtract.prototype.bindEvents = function() {
   var _this = this;
-  this.submitElement.addEventListener('click',function() {
-    var result = _this.validate();
-    if (result) {
+  submitElem.addEventListener('click',function() {
+    if ( _this.validate()) {
       _this.getdomain();
+      _this.getsubDomain();
+      _this.display();
     }
     else {
+      alert("Please Enter Correct URL");
       e.stopPropagation();
     }
   });
@@ -45,8 +47,5 @@ function createExtractor () {
   extractor.bindEvents();
 }
 var urlElem = document.getElementById('urlId'),
-    submitElem = document.getElementById('submitId'),
-    urlstr = "(^ftp:///|^http://|^https://)(([a-zA-Z]|\d)*|w*3)\.([a-zA-Z]|\d)*\.([a-z][a-z][a-z]|[a-z][a-z]\.([a-z][a-z]))",
-    domainstr = "(///|//)([a-z]|[0-9])*.([a-z]|[0-9])*.([a-z][a-z][a-z]|[a-z][a-z].[a-z][a-z])";
-    urlpatt = new RegExp(urlstr);
+    submitElem = document.getElementById('submitId');
 window.onload = createExtractor();
