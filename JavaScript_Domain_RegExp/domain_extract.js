@@ -1,17 +1,17 @@
-function domainExtract() {
+function domainExtract (getElements) {
+  this.urlElement = getElements.urlElem;
+  this.submitElement = getElements.submitElem;
   this.domain = "";
   this.subDomain = "";
-  this.urlstr = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))";
-  this.domainstr = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
 }
 
 domainExtract.prototype.validate = function() {
-  var urlpatt = new RegExp(this.urlstr);
-  return (urlpatt.test(urlElem.value));
+  var URL_PATT = new RegExp(URL_STR);
+  return (URL_PATT.test(this.urlElement.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-  var matched = urlElem.value.match(this.domainstr);
+  var matched = this.urlElement.value.match(DOMAIN_STR);
   this.domain = matched[0].substring(2,matched[0].length);
 };
 
@@ -29,7 +29,7 @@ domainExtract.prototype.display = function() {
 
 domainExtract.prototype.bindEvents = function() {
   var _this = this;
-  submitElem.addEventListener('click',function() {
+  this.submitElement.addEventListener('click',function() {
     if ( _this.validate()) {
       _this.getdomain();
       _this.getsubDomain();
@@ -42,10 +42,16 @@ domainExtract.prototype.bindEvents = function() {
   });
 };
 
-function createExtractor() {
-  var extractor = new domainExtract();
+function createExtractor (getElements) {
+  var extractor = new domainExtract(getElements);
   extractor.bindEvents();
 }
-var urlElem = document.getElementById('urlId'),
-    submitElem = document.getElementById('submitId');
-window.onload = createExtractor();
+var URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))",
+    DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
+
+var elements = {
+  "urlElem" : document.getElementById('urlId'),
+  "submitElem" : document.getElementById('submitId')
+};
+
+window.onload = createExtractor(elements);
