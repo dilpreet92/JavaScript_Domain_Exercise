@@ -1,11 +1,6 @@
 function domainExtract (getElements) {
-<<<<<<< HEAD
   this.urlElement = getElements.urlElement;
   this.submitElement = getElements.submitElement;
-=======
-  this.urlElement = getElements.urlElem;
-  this.submitElement = getElements.submitElem;
->>>>>>> 5c6db33dc4668c392a5d2105b1cbe09094abd70c
   this.domain = "";
   this.subDomain = "";
 }
@@ -15,20 +10,12 @@ domainExtract.prototype.URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.(
 domainExtract.prototype.DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
 
 domainExtract.prototype.validate = function() {
-<<<<<<< HEAD
   var URL_PATT = new RegExp(this.URL_STR);
-=======
-  var URL_PATT = new RegExp(URL_STR);
->>>>>>> 5c6db33dc4668c392a5d2105b1cbe09094abd70c
   return (URL_PATT.test(this.urlElement.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-<<<<<<< HEAD
   var matched = this.urlElement.value.match(this.DOMAIN_STR);
-=======
-  var matched = this.urlElement.value.match(DOMAIN_STR);
->>>>>>> 5c6db33dc4668c392a5d2105b1cbe09094abd70c
   this.domain = matched[0].substring(2,matched[0].length);
 };
 
@@ -59,7 +46,6 @@ domainExtract.prototype.bindEvents = function() {
   });
 };
 
-<<<<<<< HEAD
 window.onload = function() {
   var elements = {
     "urlElement" : document.getElementById('urlId'),
@@ -68,18 +54,3 @@ window.onload = function() {
   var extractor = new domainExtract(elements);
   extractor.bindEvents();
 }
-=======
-function createExtractor (getElements) {
-  var extractor = new domainExtract(getElements);
-  extractor.bindEvents();
-}
-var URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))",
-    DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
-
-var elements = {
-  "urlElem" : document.getElementById('urlId'),
-  "submitElem" : document.getElementById('submitId')
-};
-
-window.onload = createExtractor(elements);
->>>>>>> 5c6db33dc4668c392a5d2105b1cbe09094abd70c
