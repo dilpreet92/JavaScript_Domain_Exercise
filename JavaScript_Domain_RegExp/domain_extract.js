@@ -1,17 +1,21 @@
 function domainExtract (getElements) {
-  this.urlElement = getElements.urlElem;
-  this.submitElement = getElements.submitElem;
+  this.urlElement = getElements.urlElement;
+  this.submitElement = getElements.submitElement;
   this.domain = "";
   this.subDomain = "";
 }
 
+domainExtract.prototype.URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))",
+
+domainExtract.prototype.DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
+
 domainExtract.prototype.validate = function() {
-  var URL_PATT = new RegExp(URL_STR);
+  var URL_PATT = new RegExp(this.URL_STR);
   return (URL_PATT.test(this.urlElement.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-  var matched = this.urlElement.value.match(DOMAIN_STR);
+  var matched = this.urlElement.value.match(this.DOMAIN_STR);
   this.domain = matched[0].substring(2,matched[0].length);
 };
 
@@ -42,16 +46,11 @@ domainExtract.prototype.bindEvents = function() {
   });
 };
 
-function createExtractor (getElements) {
-  var extractor = new domainExtract(getElements);
+window.onload = function() {
+  var elements = {
+    "urlElement" : document.getElementById('urlId'),
+    "submitElement" : document.getElementById('submitId')
+  };
+  var extractor = new domainExtract(elements);
   extractor.bindEvents();
 }
-var URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))",
-    DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
-
-var elements = {
-  "urlElem" : document.getElementById('urlId'),
-  "submitElem" : document.getElementById('submitId')
-};
-
-window.onload = createExtractor(elements);
