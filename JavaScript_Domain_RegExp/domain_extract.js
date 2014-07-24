@@ -5,9 +5,9 @@ function domainExtract (getElements) {
   this.subDomain = "";
 }
 
-domainExtract.prototype.URL_STR = "(^ftp:///|^http://|^https://)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3}|[a-z]{2}\.([a-z]{2}))",
+domainExtract.prototype.URL_STR = "(^ftp:\/\/\/|^http:\/\/|^https:\/\/)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3,}|[a-z]{2,}\.([a-z]{2,}))",
 
-domainExtract.prototype.DOMAIN_STR = "(///|//)([a-z]|\d)+.([a-z]|\d)+.([a-z]{3}|[a-z]{2}.[a-z]{2})";
+domainExtract.prototype.DOMAIN_STR = "\/\/.+[^\/]";
 
 domainExtract.prototype.validate = function() {
   var URL_PATT = new RegExp(this.URL_STR);
