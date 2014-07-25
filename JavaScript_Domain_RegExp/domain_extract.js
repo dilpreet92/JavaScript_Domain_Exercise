@@ -33,7 +33,7 @@ domainExtract.prototype.display = function() {
 
 domainExtract.prototype.bindEvents = function() {
   var _this = this;
-  this.submitElement.addEventListener('click',function() {
+  this.submitElement.addEventListener('click',function(e) {
     if ( _this.validate()) {
       _this.getdomain();
       _this.getsubDomain();
