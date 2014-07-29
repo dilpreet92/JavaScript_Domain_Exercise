@@ -7,14 +7,17 @@ function domainExtract (getElements) {
 
 domainExtract.prototype.URL_STR = "(^ftp:\/\/\/|^http:\/\/|^https:\/\/)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3,}|[a-z]{2,}\.([a-z]{2,}))",
 
+domainExtract.prototype.DOMAIN_STR = "^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)";
+
 domainExtract.prototype.validate = function() {
   var URL_PATT = new RegExp(this.URL_STR);
   return (URL_PATT.test(this.urlElement.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-  var matched = this.urlElement.value.split("/");
-  this.domain = matched[2];
+  var DOMAIN_PATT = new RegExp(this.DOMAIN_STR);
+  var matched = DOMAIN_PATT.exec(this.urlElement.value);
+  this.domain = RegExp.$1;
 };
 
 domainExtract.prototype.getsubDomain = function() {
