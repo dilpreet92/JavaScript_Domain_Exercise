@@ -5,27 +5,18 @@ function domainExtract (getElements) {
   this.subDomain = "";
 }
 
-domainExtract.prototype.URL_STR = "(^ftp:\/\/\/|^http:\/\/|^https:\/\/)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3,}|[a-z]{2,}\.([a-z]{2,}))",
+domainExtract.prototype.URL_PATTERN = /(^ftp:\/\/\/|^http:\/\/|^https:\/\/)(([a-z]|\d)+)\.([a-z]|\d)+\.([a-z]{3,}|[a-z]{2,}\.([a-z]{2,}))/i;
 
-domainExtract.prototype.DOMAIN_STR = "^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)";
+domainExtract.prototype.DOMAIN_PATTERN = /([\w]+)\.([\w+\.]+)/i;
 
 domainExtract.prototype.validate = function() {
-  var URL_PATT = new RegExp(this.URL_STR);
-  return (URL_PATT.test(this.urlElement.value));
+  return (this.URL_PATTERN.test(this.urlElement.value));
 };
 
 domainExtract.prototype.getdomain = function() {
-  var DOMAIN_PATT = new RegExp(this.DOMAIN_STR);
-  var matched = DOMAIN_PATT.exec(this.urlElement.value);
+  var matched = this.DOMAIN_PATTERN.exec(this.urlElement.value);
   this.domain = RegExp.$1;
-};
-
-domainExtract.prototype.getsubDomain = function() {
-  var splittedDomain = this.domain.split(".");
-  if (splittedDomain.length > 2) {
-    this.subDomain = splittedDomain[0];
-    this.domain = this.domain.substring(this.domain.indexOf(".")+1,this.domain.length);
-  }
+  this.subDomain = RegExp.$2;
 };
 
 domainExtract.prototype.display = function() {
@@ -37,7 +28,6 @@ domainExtract.prototype.bindEvents = function() {
   this.submitElement.addEventListener('click',function(e) {
     if ( _this.validate()) {
       _this.getdomain();
-      _this.getsubDomain();
       _this.display();
     }
     else {
